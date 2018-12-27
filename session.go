@@ -18,7 +18,7 @@ import (
 	"time"
 	"unicode"
 
-	"github.com/gocql/gocql/internal/lru"
+	"gitlab.mobvista.com/shenlei.zhong/gocql/internal/lru"
 )
 
 // Session is the interface used by users to interact with the database.
@@ -705,7 +705,7 @@ type Query struct {
 func (q *Query) SetDisableMetricStats(isDisable bool) {
 	q.disableMetricStats = isDisable
 }
-func (q *Query) DisableMetricStats() {
+func (q *Query) IsDisableMetricStats() bool {
 	return q.disableMetricStats
 }
 func (q *Query) defaultsFromSession() {
@@ -1498,6 +1498,7 @@ type Batch struct {
 	cancelBatch           func()
 	keyspace              string
 	metrics               *queryMetrics
+	disableMetricStats    bool
 }
 
 // NewBatch creates a new batch operation without defaults from the cluster
@@ -1660,6 +1661,12 @@ func (b *Batch) RetryPolicy(r RetryPolicy) *Batch {
 
 func (b *Batch) withContext(ctx context.Context) ExecutableQuery {
 	return b.WithContext(ctx)
+}
+func (b *Batch) IsDisableMetricStats() bool {
+	return b.disableMetricStats
+}
+func (b *Batch) SetDisableMetricStats(isDisable bool) {
+	b.disableMetricStats = isDisable
 }
 
 // WithContext returns a shallow copy of b with its context

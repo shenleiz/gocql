@@ -13,7 +13,7 @@ type ExecutableQuery interface {
 	GetRoutingKey() ([]byte, error)
 	Keyspace() string
 	IsIdempotent() bool
-	DisableMetricStats() bool
+	IsDisableMetricStats() bool
 	withContext(context.Context) ExecutableQuery
 
 	RetryableQuery
@@ -25,7 +25,7 @@ type queryExecutor struct {
 }
 
 func (q *queryExecutor) attemptQuery(ctx context.Context, qry ExecutableQuery, conn *Conn) *Iter {
-	if qry.DisableMetricStats() {
+	if qry.IsDisableMetricStats() {
 		iter := qry.execute(ctx, conn)
 		return iter
 	} else {

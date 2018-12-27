@@ -1,7 +1,7 @@
 package gocql
 
 import (
-	"github.com/gocql/gocql/internal/lru"
+	"gitlab.mobvista.com/shenlei.zhong/gocql/internal/lru"
 	"sync"
 )
 
