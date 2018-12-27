@@ -698,9 +698,16 @@ type Query struct {
 	customPayload         map[string][]byte
 	metrics               *queryMetrics
 
-	disableAutoPage bool
+	disableAutoPage    bool
+	disableMetricStats bool
 }
 
+func (q *Query) SetDisableMetricStats(isDisable bool) {
+	q.disableMetricStats = isDisable
+}
+func (q *Query) DisableMetricStats() {
+	return q.disableMetricStats
+}
 func (q *Query) defaultsFromSession() {
 	s := q.session
 
@@ -714,7 +721,9 @@ func (q *Query) defaultsFromSession() {
 	q.serialCons = s.cfg.SerialConsistency
 	q.defaultTimestamp = s.cfg.DefaultTimestamp
 	q.idempotent = s.cfg.DefaultIdempotence
-	q.metrics = &queryMetrics{m: make(map[string]*hostMetrics)}
+	if q.disableMetricStats {
+		q.metrics = &queryMetrics{m: make(map[string]*hostMetrics)}
+	}
 
 	q.spec = &NonSpeculativeExecution{}
 	s.mu.RUnlock()

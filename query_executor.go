@@ -13,7 +13,7 @@ type ExecutableQuery interface {
 	GetRoutingKey() ([]byte, error)
 	Keyspace() string
 	IsIdempotent() bool
-
+	DisableMetricStats() bool
 	withContext(context.Context) ExecutableQuery
 
 	RetryableQuery
@@ -25,13 +25,17 @@ type queryExecutor struct {
 }
 
 func (q *queryExecutor) attemptQuery(ctx context.Context, qry ExecutableQuery, conn *Conn) *Iter {
-	start := time.Now()
-	iter := qry.execute(ctx, conn)
-	end := time.Now()
+	if qry.DisableMetricStats() {
+		iter := qry.execute(ctx, conn)
+		return iter
+	} else {
+		start := time.Now()
+		iter := qry.execute(ctx, conn)
+		end := time.Now()
 
-	qry.attempt(q.pool.keyspace, end, start, iter, conn.host)
-
-	return iter
+		qry.attempt(q.pool.keyspace, end, start, iter, conn.host)
+		return iter
+	}
 }
 
 func (q *queryExecutor) speculate(ctx context.Context, qry ExecutableQuery, sp SpeculativeExecutionPolicy, results chan *Iter) *Iter {
