@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"gitlab.mobvista.com/shenlei.zhong/gocql/internal/ccm"
+	"github.com/shenleiz/gocql/internal/ccm"
 )
 
 func TestEventDiscovery(t *testing.T) {

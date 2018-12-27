@@ -23,7 +23,7 @@ import (
 	"testing"
 	"time"
 
-	"gitlab.mobvista.com/shenlei.zhong/gocql/internal/streams"
+	"github.com/shenleiz/gocql/internal/streams"
 )
 
 const (

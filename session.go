@@ -18,7 +18,7 @@ import (
 	"time"
 	"unicode"
 
-	"gitlab.mobvista.com/shenlei.zhong/gocql/internal/lru"
+	"github.com/shenleiz/gocql/internal/lru"
 )
 
 // Session is the interface used by users to interact with the database.
