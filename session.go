@@ -69,8 +69,9 @@ type Session struct {
 
 	quit chan struct{}
 
-	closeMu  sync.RWMutex
-	isClosed bool
+	closeMu            sync.RWMutex
+	isClosed           bool
+	DisableMetricStats bool
 }
 
 var queryPool = &sync.Pool{
@@ -325,6 +326,7 @@ func (s *Session) Query(stmt string, values ...interface{}) *Query {
 	qry.session = s
 	qry.stmt = stmt
 	qry.values = values
+	qry.disableMetricStats = s.DisableMetricStats
 	qry.defaultsFromSession()
 	return qry
 }
@@ -702,9 +704,11 @@ type Query struct {
 	disableMetricStats bool
 }
 
-func (q *Query) SetDisableMetricStats(isDisable bool) {
-	q.disableMetricStats = isDisable
-}
+//func (q *Query) SetDisableMetricStats(isDisable bool) *Query {
+//	q2 := *q
+//	q.disableMetricStats = isDisable
+//	return &q2
+//}
 func (q *Query) IsDisableMetricStats() bool {
 	return q.disableMetricStats
 }
