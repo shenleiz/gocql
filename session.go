@@ -730,7 +730,7 @@ func (q *Query) defaultsFromSession() {
 	q.serialCons = s.cfg.SerialConsistency
 	q.defaultTimestamp = s.cfg.DefaultTimestamp
 	q.idempotent = s.cfg.DefaultIdempotence
-	if q.disableMetricStats {
+	if !q.disableMetricStats {
 		q.metrics = &queryMetrics{m: make(map[string]*hostMetrics)}
 	}
 
