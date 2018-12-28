@@ -321,12 +321,12 @@ func (s *Session) SetTrace(trace Tracer) {
 // Further details of the query may be tweaked using the resulting query
 // value before the query is executed. Query is automatically prepared
 // if it has not previously been executed.
-func (s *Session) Query(stmt string, values ...interface{}) *Query {
+func (s *Session) Query(flag bool, stmt string, values ...interface{}) *Query {
 	qry := queryPool.Get().(*Query)
 	qry.session = s
 	qry.stmt = stmt
 	qry.values = values
-	qry.disableMetricStats = s.DisableMetricStats
+	qry.disableMetricStats = flag
 	qry.defaultsFromSession()
 	return qry
 }
