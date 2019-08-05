@@ -7,7 +7,7 @@ import (
 	"reflect"
 	"sync"
 
-	"github.com/gocql/gocql"
+	"github.com/shenleiz/gocql"
 )
 
 func gen(clause, field string) {
